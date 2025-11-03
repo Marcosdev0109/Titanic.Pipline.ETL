@@ -35,7 +35,7 @@ Adicionar logs e controle de qualidade das gerações
 ## 🧠 Autor
 
 - **João Marcos**
-# 💼 Nutricionista, pesquisador e estudante de Ciência da Computação
+ 💼 `Pesquisador e estudante de Ciência da Computação
 📍 Brasil
 
 ## 🪙 Licença
