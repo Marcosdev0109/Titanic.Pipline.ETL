@@ -22,26 +22,7 @@ A IA analisa os dados de cada passageiro e cria textos promocionais ou campanhas
 
 ---
 
-## 🧩 Estrutura do Projeto
-Titanic.Pipeline.ETL/
-│
-├── data/
-│ ├── raw/ # Dados originais do Titanic
-│ ├── processed/ # Dados limpos e transformados
-│
-├── notebooks/
-│ └── etl_titanic.ipynb # Pipeline principal (extração e transformação)
-│
-├── src/
-│ ├── etl.py # Funções ETL
-│ ├── ai_client.py # Integração com a API Gemini
-│ └── marketing_prompt.py # Prompt criativo e mensagens
-│
-├── .env # Contém a chave da API (não versionar)
-├── requirements.txt
-└── README.md
-
-📈 Futuras Melhorias
+## 📈 Futuras Melhorias
 
 Adicionar análise de sentimentos das descrições geradas
 
@@ -51,14 +32,13 @@ Implementar uma API REST para consulta em tempo real
 
 Adicionar logs e controle de qualidade das gerações
 
-🧠 Autor
+## 🧠 Autor
 
-João Marcos
-💼 Nutricionista, pesquisador e estudante de Ciência da Computação
+- **João Marcos**
+# 💼 Nutricionista, pesquisador e estudante de Ciência da Computação
 📍 Brasil
-🔗 LinkedIn
 
-🪙 Licença
+## 🪙 Licença
 
 Este projeto está sob a licença MIT.
 Sinta-se à vontade para usar, estudar e adaptar o código.
