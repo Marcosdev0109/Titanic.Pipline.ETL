@@ -1,0 +1,85 @@
+{
+ "total": 891,
+ "sobreviventes": 342,
+ "taxa_geral": 0.384,
+ "por_classe": [
+  {
+   "grupo": "Primeira classe",
+   "taxa": 0.63,
+   "total": 216
+  },
+  {
+   "grupo": "Segunda classe",
+   "taxa": 0.473,
+   "total": 184
+  },
+  {
+   "grupo": "Terceira classe",
+   "taxa": 0.242,
+   "total": 491
+  }
+ ],
+ "por_sexo": [
+  {
+   "grupo": "Mulheres",
+   "taxa": 0.742,
+   "total": 314
+  },
+  {
+   "grupo": "Homens",
+   "taxa": 0.189,
+   "total": 577
+  }
+ ],
+ "por_faixa": [
+  {
+   "grupo": "Criança",
+   "taxa": 0.575,
+   "total": 73
+  },
+  {
+   "grupo": "Adolescente",
+   "taxa": 0.477,
+   "total": 44
+  },
+  {
+   "grupo": "Adulto",
+   "taxa": 0.364,
+   "total": 748
+  },
+  {
+   "grupo": "Idoso",
+   "taxa": 0.269,
+   "total": 26
+  }
+ ],
+ "por_porto": [
+  {
+   "grupo": "Cherbourg",
+   "taxa": 0.554,
+   "total": 168
+  },
+  {
+   "grupo": "Queenstown",
+   "taxa": 0.39,
+   "total": 77
+  },
+  {
+   "grupo": "Southampton",
+   "taxa": 0.339,
+   "total": 646
+  }
+ ],
+ "sozinho": [
+  {
+   "grupo": "Com família",
+   "taxa": 0.506,
+   "total": 354
+  },
+  {
+   "grupo": "Sozinho",
+   "taxa": 0.304,
+   "total": 537
+  }
+ ]
+}

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bilhete para o Titanic</title>
+<meta name="description" content="Escolha um dos 891 passageiros reais do Titanic, leia o anúncio que a IA escreveu para ele e vire o bilhete para descobrir o destino.">
+<meta name="theme-color" content="#071426">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500;6..96,700;6..96,800&family=Courier+Prime:wght@400;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* Ideia: o oceano à noite e um bilhete de papel de 1912. O bilhete é o centro;
+   gráficos e explicação ficam abaixo, em azul profundo. */
+:root{
+  --sea:#071426;
+  --sea2:#0d2140;
+  --line:#1f3a63;
+  --paper:#f3ead6;
+  --paper2:#e7dbbf;
+  --ink:#1d1a16;
+  --brass:#c9a24a;
+  --text:#e8eef8;
+  --muted:#9db0cc;
+  --alive:#2f9e6b;
+  --lost:#b8473d;
+  --display:"Bodoni Moda", Georgia, serif;
+  --stamp:"Courier Prime", "Courier New", monospace;
+  --body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--sea);color:var(--text);font-family:var(--body);font-size:18px;line-height:1.55;
+  background-image:radial-gradient(1200px 500px at 50% -120px, #163562 0%, transparent 70%)}
+.wrap{max-width:1080px;margin:0 auto;padding:0 18px}
+h1,h2,h3{font-family:var(--display);margin:0;text-wrap:balance}
+p{margin:0}
+:focus-visible{outline:3px solid var(--brass);outline-offset:3px;border-radius:6px}
+button{font:inherit;cursor:pointer}
+
+header{padding:40px 0 24px;display:grid;gap:14px}
+.line{font-family:var(--stamp);color:var(--brass);letter-spacing:.04em}
+h1{font-weight:800;font-size:clamp(2.6rem,10vw,4.6rem);line-height:.98}
+.intro{color:var(--muted);max-width:60ch;font-size:1.05rem}
+.nums{display:flex;flex-wrap:wrap;gap:10px 26px;margin-top:6px}
+.nums div{display:grid}
+.nums b{font-family:var(--display);font-size:2rem;line-height:1;font-weight:800}
+.nums span{font-size:.9rem;color:var(--muted)}
+
+/* Busca */
+.finder{display:grid;gap:12px;margin-top:10px}
+.search{display:flex;align-items:center;gap:10px;background:var(--sea2);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.search input{flex:1;min-width:0;background:none;border:0;color:var(--text);font:inherit;font-size:1.05rem;outline:none}
+.search svg{flex:none;color:var(--muted)}
+.filters{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);background:transparent;color:var(--text);border-radius:999px;padding:7px 14px;font-size:.92rem}
+.chip[aria-pressed="true"]{background:var(--brass);border-color:var(--brass);color:#1d1a16;font-weight:700}
+.results{display:grid;gap:6px;max-height:340px;overflow:auto;padding-right:4px}
+.res{display:grid;grid-template-columns:1fr auto;gap:2px 10px;text-align:left;background:var(--sea2);border:1px solid transparent;color:var(--text);border-radius:12px;padding:10px 14px}
+.res:hover,.res[aria-current="true"]{border-color:var(--brass)}
+.res b{font-weight:700}
+.res small{color:var(--muted);grid-column:1}
+.res em{font-style:normal;font-size:.78rem;color:var(--brass);grid-row:1 / span 2;grid-column:2;align-self:center}
+.count{font-size:.88rem;color:var(--muted)}
+
+.stage{display:grid;gap:28px;padding:30px 0 10px}
+@media (min-width:900px){ .stage{grid-template-columns:.85fr 1.15fr;align-items:start} .finder{position:sticky;top:20px} }
+
+/* Bilhete */
+.ticket-wrap{perspective:1600px}
+.ticket{position:relative;transform-style:preserve-3d;transition:transform .8s cubic-bezier(.3,.7,.2,1)}
+.ticket.flip{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:18px;background:var(--paper);color:var(--ink);
+  box-shadow:0 30px 60px -25px rgba(0,0,0,.8);overflow:hidden;display:flex;flex-direction:column}
+.face::before{content:"";position:absolute;inset:10px;border:1.5px solid rgba(29,26,22,.35);border-radius:12px;pointer-events:none}
+.front{position:relative;inset:auto;min-height:520px}
+.back{transform:rotateY(180deg)}
+@media (prefers-reduced-motion: reduce){ .ticket{transition:none} }
+.t-head{background:var(--ink);color:var(--paper);padding:18px 22px 14px;display:flex;justify-content:space-between;align-items:flex-end;gap:12px}
+.t-head h2{font-size:1.15rem;font-weight:700;letter-spacing:.06em}
+.t-head small{font-family:var(--stamp);font-size:.8rem;color:var(--brass)}
+.t-body{padding:20px 24px 22px;display:grid;gap:16px;flex:1;position:relative}
+.t-name{font-family:var(--display);font-weight:800;font-size:clamp(1.6rem,6vw,2.1rem);line-height:1.05}
+.t-sub{font-family:var(--stamp);font-size:.92rem;color:#5a4f3d}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px 14px;border-block:1.5px dashed rgba(29,26,22,.35);padding:12px 0}
+.grid div{display:grid}
+.grid span{font-size:.72rem;letter-spacing:.05em;color:#6b604c}
+.grid b{font-family:var(--stamp);font-size:1rem}
+.ad{font-family:var(--display);font-size:1.08rem;line-height:1.5;font-style:italic;font-weight:500}
+.ad-note{font-size:.8rem;color:#6b604c}
+.ad-empty{font-size:.98rem;color:#5a4f3d}
+.flipbtn{justify-self:start;margin-top:auto;background:var(--ink);color:var(--paper);border:0;border-radius:999px;padding:12px 20px;font-weight:700}
+.flipbtn:hover{background:#3a332a}
+.stub{position:absolute;right:18px;top:16px;font-family:var(--stamp);font-size:.75rem;color:#6b604c;text-align:right}
+.fate{flex:1;display:grid;place-content:center;justify-items:center;gap:14px;padding:28px;text-align:center}
+.stamp{font-family:var(--stamp);font-weight:700;font-size:clamp(1.7rem,7vw,2.4rem);border:4px solid currentColor;border-radius:10px;padding:6px 18px;transform:rotate(-6deg);letter-spacing:.04em}
+.stamp.alive{color:var(--alive)} .stamp.lost{color:var(--lost)}
+.fate p{max-width:34ch}
+.fate .ctx{font-size:.95rem;color:#5a4f3d}
+
+/* Gráficos */
+section{padding:56px 0 0}
+.sec-h{font-size:clamp(1.8rem,6vw,2.4rem);font-weight:700;margin-bottom:8px}
+.sec-sub{color:var(--muted);max-width:62ch;margin-bottom:24px}
+.charts{display:grid;gap:16px}
+@media (min-width:760px){ .charts{grid-template-columns:1fr 1fr} }
+.chart{background:var(--sea2);border:1px solid var(--line);border-radius:16px;padding:18px}
+.chart h3{font-family:var(--body);font-size:1.02rem;margin-bottom:12px}
+.bar{display:grid;grid-template-columns:7.5em 1fr 3.2em;gap:10px;align-items:center;font-size:.92rem;margin:9px 0}
+.bar .track{height:14px;background:#0a1a33;border-radius:99px;overflow:hidden;position:relative}
+.bar .fill{position:absolute;inset:0 auto 0 0;background:linear-gradient(90deg,var(--brass),#e6c977);border-radius:99px}
+.bar b{font-variant-numeric:tabular-nums;text-align:right}
+.bar small{grid-column:2 / span 2;color:var(--muted);font-size:.78rem;margin-top:-6px}
+
+.how{display:grid;gap:12px;counter-reset:s;list-style:none;margin:0;padding:0}
+@media (min-width:760px){ .how{grid-template-columns:repeat(4,1fr)} }
+.how li{counter-increment:s;background:var(--sea2);border:1px solid var(--line);border-radius:16px;padding:16px}
+.how li::before{content:counter(s);display:block;font-family:var(--display);font-size:2rem;font-weight:800;color:var(--brass);line-height:1;margin-bottom:6px}
+.how b{display:block;margin-bottom:4px}
+.how span{color:var(--muted);font-size:.95rem}
+footer{color:var(--muted);font-size:.88rem;padding:48px 0 40px;display:grid;gap:6px}
+footer a{color:var(--text)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="line">Southampton · Cherbourg · Queenstown → Nova York, abril de 1912</p>
+    <h1>Bilhete para o Titanic</h1>
+    <p class="intro">Escolha um dos 891 passageiros reais do dataset do Titanic. Leia o anúncio que a IA escreveu para ele como se fosse a equipe de marketing da White Star Line e vire o bilhete para descobrir o destino.</p>
+    <div class="nums" id="nums"></div>
+  </header>
+
+  <div class="stage">
+    <div class="finder">
+      <label class="search"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+        <input id="q" type="search" placeholder="Buscar por nome" aria-label="Buscar passageiro por nome" autocomplete="off"></label>
+      <div class="filters" role="group" aria-label="Filtros">
+        <button class="chip" data-f="ia" aria-pressed="true">Com anúncio da IA</button>
+        <button class="chip" data-f="1" aria-pressed="false">1ª classe</button>
+        <button class="chip" data-f="2" aria-pressed="false">2ª classe</button>
+        <button class="chip" data-f="3" aria-pressed="false">3ª classe</button>
+      </div>
+      <p class="count" id="count"></p>
+      <div class="results" id="results" role="list"></div>
+    </div>
+
+    <div class="ticket-wrap">
+      <div class="ticket" id="ticket" aria-live="polite">
+        <article class="face front" id="front"></article>
+        <article class="face back" id="back" aria-hidden="true"></article>
+      </div>
+    </div>
+  </div>
+
+  <section aria-labelledby="h-dados">
+    <h2 class="sec-h" id="h-dados">Quem sobreviveu</h2>
+    <p class="sec-sub">Taxa de sobrevivência calculada pelo pipeline a partir dos 891 passageiros. "Mulheres e crianças primeiro" aparece nos números, e a classe pesou tanto quanto.</p>
+    <div class="charts" id="charts"></div>
+  </section>
+
+  <section aria-labelledby="h-como">
+    <h2 class="sec-h" id="h-como">Como foi feito</h2>
+    <p class="sec-sub">Um pipeline ETL em Python prepara os dados; o site só lê os arquivos prontos, sem nenhuma chave de API exposta.</p>
+    <ol class="how">
+      <li><b>Extract</b><span>Lê o CSV original com 891 passageiros e 12 colunas.</span></li>
+      <li><b>Transform</b><span>Pandas tira o título do nome, estima 177 idades faltando pela mediana do título, completa o porto e calcula família a bordo e convés.</span></li>
+      <li><b>IA</b><span>Para os passageiros em destaque, um modelo de linguagem escreve o anúncio a partir dos dados, sem saber o destino.</span></li>
+      <li><b>Load</b><span>Salva JSON com passageiros, estatísticas e anúncios, que este site lê no navegador.</span></li>
+    </ol>
+  </section>
+
+  <footer>
+    <p>Projeto de <a href="https://marcosdev0109.github.io">João Marcos Rodrigues Barbosa</a> · <a href="https://github.com/Marcosdev0109/Titanic.Pipline.ETL">código no GitHub</a></p>
+    <p>Dados: dataset público do Titanic (Kaggle). Idades marcadas com * foram estimadas. Os anúncios são ficção escrita por IA.</p>
+  </footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var $ = function(id){ return document.getElementById(id); };
+  var P = [], S = null, A = {}, filtro = "ia", termo = "", atual = null;
+  var CLASSE = {1:"Primeira classe",2:"Segunda classe",3:"Terceira classe"};
+  function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];}); }
+  function semAc(s){ return String(s||"").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,""); }
+  function pct(x){ return Math.round(x*100) + "%"; }
+  function idade(p){ return (p.idade < 1 ? Math.round(p.idade*12) + " meses" : Math.round(p.idade) + " anos") + (p.idade_estimada ? "*" : ""); }
+
+  Promise.all(["data/passageiros.json","data/estatisticas.json","data/anuncios.json"].map(function(u){ return fetch(u).then(function(r){ if(!r.ok) throw new Error(u); return r.json(); }); }))
+    .then(function(res){ P = res[0]; S = res[1]; A = res[2]; inicio(); })
+    .catch(function(){ $("results").innerHTML = '<p class="count">Não foi possível carregar os dados. Abra o site por um servidor (por exemplo, GitHub Pages) e não direto do arquivo.</p>'; });
+
+  function inicio(){
+    $("nums").innerHTML = [[S.total,"passageiros"],[S.sobreviventes,"sobreviventes"],[pct(S.taxa_geral),"de sobrevivência"],[Object.keys(A).length,"anúncios escritos por IA"]]
+      .map(function(n){ return '<div><b>'+n[0]+'</b><span>'+n[1]+'</span></div>'; }).join("");
+    graficos(); lista();
+    var primeiro = P.filter(function(p){ return A[p.id]; })[0] || P[0];
+    abrir(primeiro.id);
+  }
+
+  function lista(){
+    var t = semAc(termo.trim());
+    var r = P.filter(function(p){
+      if(filtro === "ia" && !A[p.id]) return false;
+      if(filtro === "1" || filtro === "2" || filtro === "3"){ if(String(p.classe) !== filtro) return false; }
+      return !t || semAc(p.nome).indexOf(t) >= 0;
+    });
+    $("count").textContent = r.length + (r.length === 1 ? " passageiro" : " passageiros") + (r.length > 60 ? ", mostrando os 60 primeiros" : "");
+    $("results").innerHTML = r.length ? r.slice(0,60).map(function(p){
+      return '<button class="res" role="listitem" data-id="'+p.id+'"'+(atual===p.id?' aria-current="true"':'')+'><b>'+esc(p.nome)+'</b><small>'+CLASSE[p.classe]+', '+idade(p)+', '+esc(p.porto)+'</small>'+(A[p.id]?'<em>anúncio</em>':'')+'</button>';
+    }).join("") : '<p class="count">Nenhum passageiro com esse nome. Tente só o sobrenome, sem acentos.</p>';
+  }
+
+  function contexto(p){
+    var grupo = P.filter(function(x){ return x.classe === p.classe && x.sexo === p.sexo; });
+    var vivos = grupo.filter(function(x){ return x.sobreviveu; }).length;
+    var quem = p.sexo === "F" ? "das mulheres" : "dos homens";
+    return "Na " + CLASSE[p.classe].toLowerCase() + ", " + pct(vivos/grupo.length) + " " + quem + " sobreviveram.";
+  }
+
+  function abrir(id){
+    var p = P.filter(function(x){ return x.id === id; })[0]; if(!p) return;
+    atual = id; $("ticket").classList.remove("flip"); $("back").setAttribute("aria-hidden","true"); $("front").removeAttribute("aria-hidden");
+    var ad = A[p.id];
+    $("front").innerHTML = '<div class="t-head"><h2>WHITE STAR LINE</h2><small>BILHETE '+esc(p.bilhete)+'</small></div>'
+      + '<div class="t-body">'
+      + '<div><p class="t-name">'+esc((p.titulo ? p.titulo + " " : "") + p.nome)+'</p><p class="t-sub">'+CLASSE[p.classe].toUpperCase()+'</p></div>'
+      + '<div class="grid"><div><span>IDADE</span><b>'+idade(p)+'</b></div><div><span>EMBARQUE</span><b>'+esc(p.porto)+'</b></div><div><span>CABINE</span><b>'+esc(p.cabine || "—")+'</b></div>'
+      + '<div><span>TARIFA</span><b>£ '+p.tarifa.toFixed(2).replace(".",",")+'</b></div><div><span>FAMÍLIA A BORDO</span><b>'+p.familia+'</b></div><div><span>DESTINO</span><b>Nova York</b></div></div>'
+      + (ad ? '<p class="ad">"'+esc(ad.texto)+'"</p><p class="ad-note">Anúncio escrito por IA a partir dos dados acima. Ficção, não registro histórico.</p>'
+            : '<p class="ad-empty">Este passageiro ainda não tem anúncio. O pipeline gera novos com o Gemini: <code>python pipeline/etl.py --ia 20</code>.</p>')
+      + '<button class="flipbtn" id="flipbtn">Virar o bilhete</button></div>';
+    $("back").innerHTML = '<div class="t-head"><h2>WHITE STAR LINE</h2><small>15 DE ABRIL DE 1912</small></div>'
+      + '<div class="fate"><span class="stamp '+(p.sobreviveu?'alive">SOBREVIVEU':'lost">NÃO SOBREVIVEU')+'</span>'
+      + '<p>'+esc(p.nome)+'</p><p class="ctx">'+contexto(p)+'</p><button class="flipbtn" id="unflip">Voltar à frente</button></div>';
+    lista();
+  }
+
+  function barras(titulo, itens){
+    return '<div class="chart"><h3>'+titulo+'</h3>' + itens.map(function(i){
+      return '<div class="bar"><span>'+esc(i.grupo)+'</span><div class="track"><div class="fill" style="width:'+(i.taxa*100).toFixed(1)+'%"></div></div><b>'+pct(i.taxa)+'</b><small>'+i.total+' passageiros</small></div>';
+    }).join("") + '</div>';
+  }
+  function graficos(){
+    $("charts").innerHTML = barras("Por classe", S.por_classe) + barras("Por sexo", S.por_sexo) + barras("Por faixa etária", S.por_faixa) + barras("Por porto de embarque", S.por_porto);
+  }
+
+  document.addEventListener("click", function(e){
+    var b;
+    if((b = e.target.closest(".res"))){ abrir(+b.getAttribute("data-id")); if(window.innerWidth < 900) $("ticket").scrollIntoView({behavior:"smooth", block:"start"}); return; }
+    if((b = e.target.closest(".chip"))){ var f = b.getAttribute("data-f"); filtro = filtro === f ? "" : f;
+      Array.prototype.forEach.call(document.querySelectorAll(".chip"), function(c){ c.setAttribute("aria-pressed", String(c.getAttribute("data-f") === filtro)); }); lista(); return; }
+    if(e.target.closest("#flipbtn")){ $("ticket").classList.add("flip"); $("front").setAttribute("aria-hidden","true"); $("back").removeAttribute("aria-hidden"); return; }
+    if(e.target.closest("#unflip")){ $("ticket").classList.remove("flip"); $("back").setAttribute("aria-hidden","true"); $("front").removeAttribute("aria-hidden"); return; }
+  });
+  $("q").addEventListener("input", function(e){ termo = e.target.value; if(termo && filtro === "ia"){ filtro = ""; Array.prototype.forEach.call(document.querySelectorAll(".chip"), function(c){ c.setAttribute("aria-pressed","false"); }); } lista(); });
+})();
+</script>
+</body>
+</html>

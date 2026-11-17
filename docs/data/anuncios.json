@@ -1,0 +1,50 @@
+{
+ "1": {
+  "modelo": "claude",
+  "texto": "Sr. Braund, a América espera por homens dispostos a recomeçar. Embarque em Southampton e atravesse o Atlântico com seu companheiro de viagem no navio mais moderno já construído. Na terceira classe da White Star Line, refeições quentes incluídas, cabines limpas e iluminação elétrica: conforto que nenhum outro vapor oferece pelo mesmo preço. Sete libras e vinte e cinco xelins separam você de um novo mundo."
+ },
+ "2": {
+  "modelo": "claude",
+  "texto": "Senhora Cumings, a elegância de Paris continua a bordo. Embarque em Cherbourg e reencontre, na cabine C85, o requinte a que está acostumada: salão de chá, café parisiense e o Grande Salão iluminado por cúpulas de vidro. Ao lado de seu marido, a travessia de Nova York será um capítulo à altura da sua história. O Titanic não é apenas um navio: é um endereço."
+ },
+ "8": {
+  "modelo": "claude",
+  "texto": "Para a família Palsson, o Atlântico pode ser uma grande aventura. O pequeno Gösta, de dois anos, verá o mar de um convés feito para famílias, com refeições servidas três vezes ao dia e espaço para brincar com os irmãos. Embarquem juntos em Southampton: na terceira classe da White Star Line, a viagem rumo ao futuro custa pouco e cabe no coração de todos."
+ },
+ "26": {
+  "modelo": "claude",
+  "texto": "Senhora Asplund, levar a família inteira para uma vida nova é coisa de quem tem coragem. Embarque em Southampton com seus cinco companheiros de viagem e descubra uma terceira classe como nunca houve: cabines dignas, cardápio farto e um navio que dispensa o enjoo dos vapores antigos. Do porto inglês ao cais de Nova York, sua família viaja unida e bem cuidada."
+ },
+ "62": {
+  "modelo": "claude",
+  "texto": "Mademoiselle Icard, há viagens que pedem discrição e conforto. Na cabine B28, a primeira classe do Titanic oferece privacidade, atendimento atento e salões onde uma dama pode ler, escrever cartas e apreciar o oceano em paz. Embarque em Southampton e deixe que a White Star Line cuide de cada detalhe, do café da manhã ao último pôr do sol antes de Nova York."
+ },
+ "69": {
+  "modelo": "claude",
+  "texto": "Erna, aos dezessete anos o mundo começa do outro lado do mar. Com sua família a bordo, a terceira classe do Titanic oferece o que nenhum navio de emigrantes jamais ofereceu: limpeza, comida quente e um salão comum para fazer amigos de toda a Europa. Embarque em Southampton por menos de oito libras. A América é grande, mas a viagem até ela pode ser leve."
+ },
+ "79": {
+  "modelo": "claude",
+  "texto": "Para o pequeno Alden e seus pais, a segunda classe do Titanic é tão confortável quanto a primeira de muitos navios. Biblioteca em mogno, convés de passeio amplo e cardápio de quatro pratos tornam a travessia uma lembrança feliz. Embarque em Southampton: a White Star Line tem orgulho de levar as famílias para casa com segurança, conforto e pontualidade."
+ },
+ "156": {
+  "modelo": "claude",
+  "texto": "Sr. Williams, um cavalheiro que conhece o mundo merece um navio à altura. Embarque em Cherbourg e aproveite a sala de fumar da primeira classe, a quadra de squash e o banho turco, novidades que nenhum outro transatlântico reúne. Viaje ao lado de seu filho e chegue a Nova York descansado, pronto para o que vier. O Titanic foi construído para homens de iniciativa."
+ },
+ "342": {
+  "modelo": "claude",
+  "texto": "Senhorita Fortune, a sua família merece a melhor vista do Atlântico. Nas cabines C23, C25 e C27, os Fortune viajam juntos em suítes vizinhas, com camareiros dedicados e jantares no restaurante à la carte. Embarque em Southampton e volte ao Canadá com histórias de uma travessia inesquecível. A White Star Line não poupou nada para que cada noite pareça uma festa."
+ },
+ "446": {
+  "modelo": "claude",
+  "texto": "Para o jovem Washington Dodge, quatro anos de idade e espírito de explorador, o Titanic é um palácio flutuante. Enquanto os pais desfrutam da primeira classe na cabine A34, ele descobrirá corredores enormes, elevadores e o maior navio que o mundo já viu. Embarque em Southampton com a família: aqui, até a criança mais curiosa encontra algo novo a cada manhã."
+ },
+ "701": {
+  "modelo": "claude",
+  "texto": "Senhora Astor, a lua de mel perfeita merece o navio mais luxuoso do mundo. Embarque em Cherbourg e ocupe as cabines C62 e C64, com sala de estar privativa e vista para o oceano. Jantares no Ritz flutuante, música de câmara ao entardecer e a companhia de seu marido em cada passeio pelo convés. A White Star Line preparou a travessia como um presente de casamento."
+ },
+ "880": {
+  "modelo": "claude",
+  "texto": "Senhora Potter, depois de uma temporada na Europa, nada como voltar para casa com estilo. Embarque em Cherbourg e acomode-se na cabine C50, perto dos salões de leitura e das melhores mesas de jantar. Ao lado de sua filha, a primeira classe do Titanic oferece a calma que uma viajante experiente sabe valorizar. Nova York nunca esteve tão perto e tão confortável."
+ }
+}
